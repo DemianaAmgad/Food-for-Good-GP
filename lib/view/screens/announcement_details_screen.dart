@@ -126,6 +126,3 @@ class _AnnouncementDetailsScreenState extends State<AnnouncementDetailsScreen> {
     );
   }
 }
-
-
-// end of the page
