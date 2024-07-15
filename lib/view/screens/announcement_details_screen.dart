@@ -7,7 +7,8 @@ class AnnouncementDetailsScreen extends StatefulWidget {
   const AnnouncementDetailsScreen({super.key});
 
   @override
-  _AnnouncementDetailsScreenState createState() => _AnnouncementDetailsScreenState();
+  _AnnouncementDetailsScreenState createState() =>
+      _AnnouncementDetailsScreenState();
 }
 
 class _AnnouncementDetailsScreenState extends State<AnnouncementDetailsScreen> {
@@ -20,7 +21,8 @@ class _AnnouncementDetailsScreenState extends State<AnnouncementDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Details',
+        title: Text(
+          'Details',
           style: TextStyles.titleStyle,
         ),
       ),
@@ -35,16 +37,14 @@ class _AnnouncementDetailsScreenState extends State<AnnouncementDetailsScreen> {
                 Expanded(
                   flex: 2,
                   child: TextField(
-                    style: TextStyles.fieldStyle.copyWith(
-                      fontWeight: FontWeight.w700
-                    ),
+                    style: TextStyles.fieldStyle
+                        .copyWith(fontWeight: FontWeight.w700),
                     controller: _amountController,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: 'Amount',
-                      labelStyle: TextStyles.fieldStyle.copyWith(
-                          fontWeight: FontWeight.w500
-                      ),
+                      labelStyle: TextStyles.fieldStyle
+                          .copyWith(fontWeight: FontWeight.w500),
                       border: const OutlineInputBorder(),
                     ),
                   ),
@@ -56,9 +56,8 @@ class _AnnouncementDetailsScreenState extends State<AnnouncementDetailsScreen> {
                     value: _selectedUnit,
                     decoration: InputDecoration(
                       labelText: 'Unit',
-                      labelStyle: TextStyles.fieldStyle.copyWith(
-                          fontWeight: FontWeight.w500
-                      ),
+                      labelStyle: TextStyles.fieldStyle
+                          .copyWith(fontWeight: FontWeight.w500),
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
@@ -70,10 +69,10 @@ class _AnnouncementDetailsScreenState extends State<AnnouncementDetailsScreen> {
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value,
-                          style: TextStyles.fieldStyle.copyWith(
-                            fontWeight: FontWeight.w700
-                        ),
+                        child: Text(
+                          value,
+                          style: TextStyles.fieldStyle
+                              .copyWith(fontWeight: FontWeight.w700),
                         ),
                       );
                     }).toList(),
@@ -86,9 +85,8 @@ class _AnnouncementDetailsScreenState extends State<AnnouncementDetailsScreen> {
               value: _selectedType,
               decoration: InputDecoration(
                 labelText: 'Type',
-                labelStyle: TextStyles.fieldStyle.copyWith(
-                    fontWeight: FontWeight.w500
-                ),
+                labelStyle:
+                    TextStyles.fieldStyle.copyWith(fontWeight: FontWeight.w500),
                 border: OutlineInputBorder(),
               ),
               onChanged: (value) {
@@ -100,10 +98,10 @@ class _AnnouncementDetailsScreenState extends State<AnnouncementDetailsScreen> {
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(value,
-                      style: TextStyles.fieldStyle.copyWith(
-                      fontWeight: FontWeight.w700
-                  ),
+                  child: Text(
+                    value,
+                    style: TextStyles.fieldStyle
+                        .copyWith(fontWeight: FontWeight.w700),
                   ),
                 );
               }).toList(),
@@ -119,7 +117,7 @@ class _AnnouncementDetailsScreenState extends State<AnnouncementDetailsScreen> {
                 },
                 text: 'Confirm',
                 textColor: AppColors.buttonLoginTextColor,
-                 backgroundColor: AppColors.buttonLoginBackgroundColor,
+                backgroundColor: AppColors.buttonLoginBackgroundColor,
               ),
             ),
           ],
@@ -128,3 +126,6 @@ class _AnnouncementDetailsScreenState extends State<AnnouncementDetailsScreen> {
     );
   }
 }
+
+
+// end of the page
