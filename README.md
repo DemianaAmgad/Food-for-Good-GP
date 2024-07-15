@@ -1,2 +1,16 @@
-# Food for Good GP
- "Food for Good" is a Flutter-based mobile app designed to reduce food waste by connecting restaurants with organic fertilizer factories. It facilitates the collection and transportation of food waste, converting it into fertilizer, thereby supporting sustainability and creating jobs for drivers.
+# foodforgood
+
+A new Flutter project.
+
+## Getting Started
+
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
