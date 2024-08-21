@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:foodforgood/theme/app_styles.dart';
 import 'package:foodforgood/view/widgets/custom_text_field_widget.dart';
 import 'package:foodforgood/view/widgets/password_field_widget.dart';
-
 import 'custom_button_widget.dart';
 
 class LoginFormWidget extends StatefulWidget {
