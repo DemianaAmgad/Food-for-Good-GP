@@ -8,12 +8,17 @@ class CustomTextFieldWidget extends StatefulWidget {
   final Function(String)? onChanged;
   final Color? hintColor;
   final Color? textColor;
+  final TextInputType keyboardType;
 
-  const CustomTextFieldWidget({super.key,
+  const CustomTextFieldWidget({
+    super.key,
     required this.controller,
     required this.hintText,
     this.errorText,
-    this.onChanged, this.hintColor, this.textColor,
+    this.onChanged,
+    this.hintColor,
+    this.textColor,
+    this.keyboardType = TextInputType.text,
   });
 
   @override
@@ -43,6 +48,7 @@ class CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
       controller: widget.controller,
       focusNode: _focusNode,
       onChanged: widget.onChanged,
+      keyboardType: widget.keyboardType,
       decoration: InputDecoration(
         errorText: widget.errorText,
         // border: OutlineInputBorder(
@@ -52,7 +58,8 @@ class CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
         //   ),
         // ),
         hintText: widget.hintText,
-        hintStyle: TextStyles.fieldStyle.copyWith(color: widget.hintColor?? Colors.grey),
+        hintStyle: TextStyles.fieldStyle
+            .copyWith(color: widget.hintColor ?? Colors.grey),
         // focusedBorder: OutlineInputBorder(
         //   borderRadius: BorderRadius.circular(12),
         //   borderSide: BorderSide(
@@ -66,7 +73,8 @@ class CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
         //   ),
         // ),
       ),
-      style: TextStyles.fieldStyle.copyWith(color: widget.textColor?? Colors.white),
+      style: TextStyles.fieldStyle
+          .copyWith(color: widget.textColor ?? Colors.white),
     );
   }
 }

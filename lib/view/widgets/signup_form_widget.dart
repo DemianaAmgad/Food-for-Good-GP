@@ -1,16 +1,19 @@
+// signup_form_widget.dart
 import 'package:flutter/material.dart';
 import 'package:foodforgood/view/widgets/custom_text_field_widget.dart';
 import 'package:foodforgood/view/widgets/password_field_widget.dart';
 import 'package:foodforgood/view/widgets/custom_button_widget.dart';
-
 import '../../theme/app_styles.dart';
+// firebase libraries
 
 enum Gender { Male, Female, Other }
 
 class SignupFormWidget extends StatefulWidget {
-  final Function(String?) onContinuePressed;
+  final Function(String? role, String email, String password, String firstName,
+      String lastName, String phone, String birthdate) onContinuePressed;
 
-  const SignupFormWidget({Key? key, required this.onContinuePressed}) : super(key: key);
+  const SignupFormWidget({Key? key, required this.onContinuePressed})
+      : super(key: key);
 
   @override
   _SignupFormWidgetState createState() => _SignupFormWidgetState();
@@ -25,6 +28,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   final _lastNameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _pinController = TextEditingController();
+
   Gender _selectedGender = Gender.Male;
   String? _selectedRole;
 
@@ -40,6 +44,20 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   bool _isPhoneConfirmed = false;
   bool _isSignupButtonActive = false;
 
+  // TextEditingController getEmail(String email) {
+  //   return _emailController;
+  // }
+
+  //   TextEditingController getpassword(String password) {
+  //   return _passwordController;
+  // }
+
+  // Getter for email
+  String get email => _emailController.text;
+
+  // Getter for password
+  String get password => _passwordController.text;
+
   @override
   void initState() {
     super.initState();
@@ -50,8 +68,6 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
     _confirmPasswordController.addListener(_validateForm);
     _birthdateController.addListener(_validateForm);
     _phoneController.addListener(_validateForm);
-    _firstNameController.addListener(_validateForm);
-    _lastNameController.addListener(_validateForm);
   }
 
   void _validateFirstName() {
@@ -131,7 +147,8 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
     if (email.isEmpty) {
       return "Email cannot be empty";
     }
-    final emailRegex = RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
+    final emailRegex =
+        RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
     if (!emailRegex.hasMatch(email)) {
       return "Enter a valid email";
     }
@@ -162,7 +179,8 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
     return null;
   }
 
-  String? _validateConfirmPasswordText(String password, String confirmPassword) {
+  String? _validateConfirmPasswordText(
+      String password, String confirmPassword) {
     if (confirmPassword.isEmpty) {
       return "Confirm password cannot be empty";
     }
@@ -176,7 +194,8 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
     if (birthdate.isEmpty) {
       return "Birthdate cannot be empty";
     }
-    final birthdateRegex = RegExp(r"^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$");
+    final birthdateRegex =
+        RegExp(r"^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$");
     if (!birthdateRegex.hasMatch(birthdate)) {
       return "Enter a valid birthdate in MM/DD/YYYY format";
     }
@@ -196,7 +215,16 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
 
   void _handleSignup() {
     if (_isSignupButtonActive) {
-      widget.onContinuePressed(_selectedRole);
+      // Call the callback with the selected role, email, and password
+      widget.onContinuePressed(
+        _selectedRole,
+        _emailController.text,
+        _passwordController.text,
+        _firstNameController.text,
+        _lastNameController.text,
+        _phoneController.text,
+        _birthdateController.text,
+      );
     }
   }
 
@@ -217,7 +245,8 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                 children: [
                   Text(
                     'Enter the PIN sent to your phone',
-                    style: TextStyles.subtitleStyle.copyWith(color: AppColors.signupColor),
+                    style: TextStyles.subtitleStyle
+                        .copyWith(color: AppColors.signupColor),
                   ),
                   const SizedBox(height: 16),
                   CustomTextFieldWidget(
@@ -227,6 +256,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                     onChanged: (text) {
                       _validatePin();
                     },
+                    keyboardType: TextInputType.number,
                     textColor: Colors.black,
                   ),
                   const SizedBox(height: 16),
@@ -326,6 +356,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
           onChanged: (text) {
             _validateEmail();
           },
+          keyboardType: TextInputType.emailAddress,
         ),
         const SizedBox(height: 16),
         const _CustomLabelText("Password"),
@@ -388,21 +419,29 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                       DropdownMenuItem(
                         value: Gender.Male,
                         child: Text("Male",
-                          style: _selectedGender == Gender.Male?
-                          TextStyles.fieldStyle.copyWith(color: AppColors.selectedItemColor) :
-                          TextStyles.fieldStyle.copyWith(color: AppColors.unselectedItemColor)),
+                            style: _selectedGender == Gender.Male
+                                ? TextStyles.fieldStyle.copyWith(
+                                    color: AppColors.selectedItemColor)
+                                : TextStyles.fieldStyle.copyWith(
+                                    color: AppColors.unselectedItemColor)),
                       ),
                       DropdownMenuItem(
                         value: Gender.Female,
-                        child: Text("Female", style: _selectedGender == Gender.Female?
-                        TextStyles.fieldStyle.copyWith(color: AppColors.selectedItemColor) :
-                        TextStyles.fieldStyle.copyWith(color: AppColors.unselectedItemColor)),
+                        child: Text("Female",
+                            style: _selectedGender == Gender.Female
+                                ? TextStyles.fieldStyle.copyWith(
+                                    color: AppColors.selectedItemColor)
+                                : TextStyles.fieldStyle.copyWith(
+                                    color: AppColors.unselectedItemColor)),
                       ),
                       DropdownMenuItem(
                         value: Gender.Other,
-                        child: Text("Other", style: _selectedGender == Gender.Other?
-                        TextStyles.fieldStyle.copyWith(color: AppColors.selectedItemColor) :
-                        TextStyles.fieldStyle.copyWith(color: AppColors.unselectedItemColor)),
+                        child: Text("Other",
+                            style: _selectedGender == Gender.Other
+                                ? TextStyles.fieldStyle.copyWith(
+                                    color: AppColors.selectedItemColor)
+                                : TextStyles.fieldStyle.copyWith(
+                                    color: AppColors.unselectedItemColor)),
                       ),
                     ],
                   ),
@@ -429,6 +468,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                     onChanged: (text) {
                       _validatePhone();
                     },
+                    keyboardType: TextInputType.number,
                   ),
                 ],
               ),
@@ -451,14 +491,17 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4.0),
                           ),
-                          backgroundColor: AppColors.confirmButtonBackgroundColor,
+                          backgroundColor:
+                              AppColors.confirmButtonBackgroundColor,
                         ),
-                        child: Text("Confirm",
-                          style: TextStyles.subtitleStyle.copyWith(color: AppColors.confirmButtonTextColor),),
+                        child: Text(
+                          "Confirm",
+                          style: TextStyles.subtitleStyle.copyWith(
+                              color: AppColors.confirmButtonTextColor),
+                        ),
                       ),
                     ),
-                    if (_phoneError != null)
-                      const SizedBox(height: 26.0),
+                    if (_phoneError != null) const SizedBox(height: 26.0),
                   ],
                 ),
               ),
@@ -470,7 +513,11 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
           width: double.infinity,
           child: DropdownButton<String>(
             value: _selectedRole,
-            hint: Text('Choose a role', style: TextStyles.fieldStyle.copyWith(color: AppColors.hintTextColor),),
+            hint: Text(
+              'Choose a role',
+              style: TextStyles.fieldStyle
+                  .copyWith(color: AppColors.hintTextColor),
+            ),
             onChanged: (String? newValue) {
               setState(() {
                 _selectedRole = newValue;
@@ -483,9 +530,12 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                 .map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
-                child: Text(value, style: _selectedRole == value?
-                TextStyles.fieldStyle.copyWith(color: AppColors.selectedItemColor) :
-                TextStyles.fieldStyle.copyWith(color: AppColors.unselectedItemColor)),
+                child: Text(value,
+                    style: _selectedRole == value
+                        ? TextStyles.fieldStyle
+                            .copyWith(color: AppColors.selectedItemColor)
+                        : TextStyles.fieldStyle
+                            .copyWith(color: AppColors.unselectedItemColor)),
               );
             }).toList(),
           ),
@@ -499,7 +549,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
               if (_isSignupButtonActive) {
                 _handleSignup();
               }
-              },
+            },
             text: "Continue",
           ),
         ),

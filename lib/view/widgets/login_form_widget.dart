@@ -3,6 +3,12 @@ import 'package:foodforgood/theme/app_styles.dart';
 import 'package:foodforgood/view/widgets/custom_text_field_widget.dart';
 import 'package:foodforgood/view/widgets/password_field_widget.dart';
 import 'custom_button_widget.dart';
+import 'package:foodforgood/view/screens/driver_screen.dart';
+import 'package:foodforgood/view/screens/resturant_announcment_screen.dart';
+
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginFormWidget extends StatefulWidget {
   final VoidCallback onLoginPressed;
@@ -18,6 +24,47 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
   final _passwordController = TextEditingController();
   String? _emailError;
   String? _passwordError;
+
+  Future<void> _login() async {
+    try {
+     final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+
+      User? user = userCredential.user;
+      if (user != null) {
+        // Fetch the user role from Firestore
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+        if (userDoc.exists) {
+          String role = userDoc.get('role'); // Get the role field from Firestore
+          if (role == 'Restaurant Manager') {
+             Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const ResturantAnnouncmentScreen()),
+            );
+          } else if (role == 'Driver') {
+            // Navigate to the Driver screen
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const DriverScreen()),
+            );
+          }
+        }
+      }
+    } on FirebaseAuthException catch (e) {
+      // Handle errors and update state with error messages
+      print("Error: ${e.message}");
+      setState(() {
+        _emailError = e.code == 'user-not-found' ? "No user found with this email" : null;
+        _passwordError = e.code == 'wrong-password' ? "Incorrect password" : null;
+      });
+    }
+    catch (e) {
+    // Handle general errors
+    print("An unexpected error occurred: $e");
+  }
+  }
 
   @override
   void initState() {
@@ -74,6 +121,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
           onChanged: (text) {
             _validateEmail();
           },
+          keyboardType: TextInputType.emailAddress,
         ),
         const SizedBox(height: 16),
         const _CustomLabelText("Password"),
@@ -90,7 +138,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
           alignment: Alignment.centerRight,
           child: GestureDetector(
             onTap: () {
-              // Handle forget password logic
+              print("Forgot password tapped");
             },
             child: Text(
               "Forget password?",
@@ -107,7 +155,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
               _validateEmail();
               _validatePassword();
               if (_emailError == null && _passwordError == null) {
-                widget.onLoginPressed();
+                _login(); // Call _login method when validation passes
               }
             },
             backgroundColor: AppColors.buttonLoginBackgroundColor,

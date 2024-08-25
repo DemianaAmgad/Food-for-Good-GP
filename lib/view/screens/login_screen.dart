@@ -13,9 +13,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
-  void _validateAndSubmit() {
-    print("logged in");
+  // Updated: Async function to handle login button press
+  void _validateAndSubmit() async {
+    print("Attempting to log in");
+    // Additional login logic if needed
   }
 
   @override
@@ -33,7 +34,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 24),
                 const _Title("Login"),
                 const SizedBox(height: 24),
-                LoginFormWidget(onLoginPressed: _validateAndSubmit), // Use the LoginForm
+                // Use the LoginFormWidget
+                LoginFormWidget(onLoginPressed: _validateAndSubmit), 
               ],
             ),
           ),
@@ -72,7 +74,11 @@ class _signUpNavigation extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              // Handle sign up navigation
+              // Navigate to SignUpScreen
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SignupScreen()),
+              );
             },
             child: Text(
               "Don't have an account?",
@@ -84,7 +90,7 @@ class _signUpNavigation extends StatelessWidget {
             width: double.infinity,
             child: CustomButtonWidget(
               text: 'Sign up',
-              onButtonPressed: (){
+              onButtonPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const SignupScreen()),

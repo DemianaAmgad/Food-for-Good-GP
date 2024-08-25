@@ -39,7 +39,7 @@ class DriversOrdersWidget extends StatelessWidget {
                   ),
                   _buildOrderCard(
                     context,
-                    'Restaurant C',
+                    'Hotel C',
                     '789 Maple Ave',
                     7,
                   ),

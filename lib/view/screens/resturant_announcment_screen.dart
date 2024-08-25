@@ -1,3 +1,4 @@
+// restaurant_announcement_screen
 import 'package:flutter/material.dart';
 import 'package:foodforgood/view/widgets/resturant_announcment_widget.dart';
 
