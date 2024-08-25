@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../theme/app_styles.dart';
 
 class OrderCardWidget extends StatelessWidget {
@@ -31,27 +30,30 @@ class OrderCardWidget extends StatelessWidget {
             Text(
               restaurantName,
               style: TextStyles.cardTitleStyle.copyWith(
-                  color: AppColors.cardTitleColor
-              )
+                  color: AppColors.cardTitleColor),
             ),
             const SizedBox(height: 8.0),
             Row(
               children: [
-                const Icon(Icons.location_on, size: 18.0, color: AppColors.cardTextColor,),
+                const Icon(Icons.location_on,
+                    size: 18.0, color: AppColors.cardTextColor),
                 const SizedBox(width: 8.0),
-                Text(location,
-                  style: TextStyles.normalStyle.copyWith(color: AppColors.cardTextColor)
-                  ,),
+                Text(
+                  location,
+                  style: TextStyles.normalStyle
+                      .copyWith(color: AppColors.cardTextColor),
+                ),
               ],
             ),
             const SizedBox(height: 8.0),
             Row(
               children: [
-                const Icon(Icons.shopping_cart, size: 18.0, color: AppColors.cardTextColor,),
+                const Icon(Icons.shopping_cart,
+                    size: 18.0, color: AppColors.cardTextColor),
                 const SizedBox(width: 8.0),
                 Text('Quantity: $quantity',
-                    style: TextStyles.normalStyle.copyWith(color: AppColors.cardTextColor)
-                ),
+                    style: TextStyles.normalStyle
+                        .copyWith(color: AppColors.cardTextColor)),
               ],
             ),
             const SizedBox(height: 16.0),
@@ -63,10 +65,11 @@ class OrderCardWidget extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.buttonAcceptBackgroundColor,
                   ),
-                  child: Text('Accept',
-                    style: TextStyles.cardButtonTextStyle.copyWith(
-                      color: AppColors.cardTitleColor
-                    ),),
+                  child: Text(
+                    'Accept',
+                    style: TextStyles.cardButtonTextStyle
+                        .copyWith(color: AppColors.cardTitleColor),
+                  ),
                 ),
                 const SizedBox(width: 8.0),
                 ElevatedButton(
@@ -74,10 +77,11 @@ class OrderCardWidget extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.buttonRejectBackgroundColor,
                   ),
-                  child: Text('Reject',
-                    style: TextStyles.cardButtonTextStyle.copyWith(
-                        color: AppColors.cardTitleColor
-                    ),),
+                  child: Text(
+                    'Reject',
+                    style: TextStyles.cardButtonTextStyle
+                        .copyWith(color: AppColors.cardTitleColor),
+                  ),
                 ),
               ],
             ),
