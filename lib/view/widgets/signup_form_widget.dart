@@ -4,13 +4,20 @@ import 'package:foodforgood/view/widgets/custom_text_field_widget.dart';
 import 'package:foodforgood/view/widgets/password_field_widget.dart';
 import 'package:foodforgood/view/widgets/custom_button_widget.dart';
 import '../../theme/app_styles.dart';
-// firebase libraries
+import 'package:foodforgood/view/widgets/custom_text_field_widget.dart';
 
 enum Gender { Male, Female, Other }
 
 class SignupFormWidget extends StatefulWidget {
-  final Function(String? role, String email, String password, String firstName,
-      String lastName, String phone, String birthdate) onContinuePressed;
+  final Function(
+      String? role,
+      String email,
+      String password,
+      String firstName,
+      String lastName,
+      String phone,
+      String birthdate,
+      String restaurantName) onContinuePressed;
 
   const SignupFormWidget({Key? key, required this.onContinuePressed})
       : super(key: key);
@@ -28,6 +35,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   final _lastNameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _pinController = TextEditingController();
+  final _restaurantNameController = TextEditingController(); // recently added
 
   Gender _selectedGender = Gender.Male;
   String? _selectedRole;
@@ -40,7 +48,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   String? _birthdateError;
   String? _phoneError;
   String? _pinError;
-
+  String? _restaurantNameError;
   bool _isPhoneConfirmed = false;
   bool _isSignupButtonActive = false;
 
@@ -68,6 +76,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
     _confirmPasswordController.addListener(_validateForm);
     _birthdateController.addListener(_validateForm);
     _phoneController.addListener(_validateForm);
+    _restaurantNameController.addListener(_validateForm);
   }
 
   void _validateFirstName() {
@@ -115,6 +124,13 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
     });
   }
 
+  void _validateRestaurantName() {
+    setState(() {
+      _restaurantNameError =
+          _validateRestaurantNameText(_restaurantNameController.text);
+    });
+  }
+
   void _validateForm() {
     setState(() {
       _emailError = _validateEmailText(_emailController.text);
@@ -127,6 +143,8 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
       _phoneError = _validatePhoneText(_phoneController.text);
       _firstNameError = _validateFirstNameText(_firstNameController.text);
       _lastNameError = _validateLastNameText(_lastNameController.text);
+      _restaurantNameError =
+          _validateRestaurantNameText(_restaurantNameController.text);
 
       _isSignupButtonActive = _emailError == null &&
           _passwordError == null &&
@@ -139,7 +157,9 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
           _lastNameController.text.isNotEmpty &&
           _selectedRole != null &&
           _pinController.text == '0000' &&
-          _isPhoneConfirmed == true;
+          _isPhoneConfirmed == true &&
+          (_selectedRole != 'Restaurant Manager' ||
+              _restaurantNameController.text.isNotEmpty);
     });
   }
 
@@ -213,6 +233,13 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
     return null;
   }
 
+  String? _validateRestaurantNameText(String restaurantName) {
+    if (_selectedRole == 'Restaurant Manager' && restaurantName.isEmpty) {
+      return "Restaurant name cannot be empty";
+    }
+    return null;
+  }
+
   void _handleSignup() {
     if (_isSignupButtonActive) {
       // Call the callback with the selected role, email, and password
@@ -224,6 +251,9 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
         _lastNameController.text,
         _phoneController.text,
         _birthdateController.text,
+        _selectedRole == 'Restaurant Manager'
+            ? _restaurantNameController.text
+            : '',
       );
     }
   }
@@ -541,6 +571,26 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
           ),
         ),
         const SizedBox(height: 24),
+        if (_selectedRole ==
+            'Restaurant Manager') // Show only if role is Restaurant Manager
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const _CustomLabelText("Restaurant Name"),
+                const SizedBox(height: 8),
+                CustomTextFieldWidget(
+                  controller: _restaurantNameController,
+                  hintText: "Enter restaurant name",
+                  errorText: _restaurantNameError,
+                  onChanged: (text) {
+                    _validateRestaurantName();
+                  },
+                ),
+              ],
+            ),
+          ),
         SizedBox(
           width: double.infinity,
           child: CustomButtonWidget(

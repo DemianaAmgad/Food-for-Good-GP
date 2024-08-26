@@ -51,6 +51,7 @@ class DriversOrdersWidget extends StatelessWidget {
                   announcement['restaurantName'],
                   announcement['location'],
                   announcement['quantity'],
+                  announcement['unit'],
                 );
               },
             );
@@ -61,11 +62,12 @@ class DriversOrdersWidget extends StatelessWidget {
   }
 
   Widget _buildOrderCard(
-      BuildContext context, String announcementId, String restaurantName, String location, int quantity) {
+      BuildContext context, String announcementId, String restaurantName, String location, int quantity, String unit) {
     return OrderCardWidget(
       restaurantName: restaurantName,
       location: location,
       quantity: quantity,
+      unit:unit,
       onAccept: () => _acceptAnnouncement(announcementId),
       onReject: () => _rejectAnnouncement(announcementId),
     );

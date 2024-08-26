@@ -5,7 +5,7 @@ import '../../theme/app_styles.dart';
 
 class NewAnnouncementScreen extends StatelessWidget {
   final String restaurantName;
-
+  
   const NewAnnouncementScreen({Key? key, required this.restaurantName}) : super(key: key);
 
   @override
@@ -24,7 +24,7 @@ class NewAnnouncementScreen extends StatelessWidget {
             // Navigate to the details screen
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const AnnouncementDetailsScreen()),
+              MaterialPageRoute(builder: (context) =>  AnnouncementDetailsScreen(restaurantName: restaurantName,)),
             );
           },
           style: ElevatedButton.styleFrom(

@@ -5,6 +5,7 @@ class OrderCardWidget extends StatelessWidget {
   final String restaurantName;
   final String location;
   final int quantity;
+  final String unit;
   final VoidCallback onAccept;
   final VoidCallback onReject;
 
@@ -13,6 +14,7 @@ class OrderCardWidget extends StatelessWidget {
     required this.restaurantName,
     required this.location,
     required this.quantity,
+     required this.unit,
     required this.onAccept,
     required this.onReject,
   });
@@ -51,7 +53,7 @@ class OrderCardWidget extends StatelessWidget {
                 const Icon(Icons.shopping_cart,
                     size: 18.0, color: AppColors.cardTextColor),
                 const SizedBox(width: 8.0),
-                Text('Quantity: $quantity',
+                Text('Quantity: $quantity $unit',
                     style: TextStyles.normalStyle
                         .copyWith(color: AppColors.cardTextColor)),
               ],

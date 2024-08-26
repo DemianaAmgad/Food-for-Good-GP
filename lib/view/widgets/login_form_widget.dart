@@ -6,7 +6,6 @@ import 'custom_button_widget.dart';
 import 'package:foodforgood/view/screens/driver_screen.dart';
 import 'package:foodforgood/view/screens/resturant_announcment_screen.dart';
 
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -27,43 +26,61 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
 
   Future<void> _login() async {
     try {
-     final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      // Sign in the user
+      final userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
 
       User? user = userCredential.user;
       if (user != null) {
-        // Fetch the user role from Firestore
-        DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+        // Fetch the user data from Firestore
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
         if (userDoc.exists) {
-          String role = userDoc.get('role'); // Get the role field from Firestore
+          // Retrieve user data
+          String firstName = userDoc.get('firstName');
+          String lastName = userDoc.get('lastName');
+          String role = userDoc.get('role');
+
+          // Build the full name
+          String fullName = '$firstName $lastName';
+
+          // Navigate based on the role
           if (role == 'Restaurant Manager') {
-             Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const ResturantAnnouncmentScreen()),
-            );
-          } else if (role == 'Driver') {
-            // Navigate to the Driver screen
+            String restaurantName = userDoc.get('restaurantName');
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const DriverScreen()),
+              MaterialPageRoute(
+                  builder: (context) => ResturantAnnouncmentScreen(
+                      restaurantName: restaurantName)),
+            );
+          } else if (role == 'Driver') {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      DriverScreen(driverName: fullName)),
             );
           }
         }
       }
     } on FirebaseAuthException catch (e) {
-      // Handle errors and update state with error messages
+      // Handle FirebaseAuth errors
       print("Error: ${e.message}");
       setState(() {
-        _emailError = e.code == 'user-not-found' ? "No user found with this email" : null;
-        _passwordError = e.code == 'wrong-password' ? "Incorrect password" : null;
+        _emailError =
+            e.code == 'user-not-found' ? "No user found with this email" : null;
+        _passwordError =
+            e.code == 'wrong-password' ? "Incorrect password" : null;
       });
+    } catch (e) {
+      // Handle general errors
+      print("An unexpected error occurred: $e");
     }
-    catch (e) {
-    // Handle general errors
-    print("An unexpected error occurred: $e");
-  }
   }
 
   @override
@@ -89,7 +106,8 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
     if (email.isEmpty) {
       return "Email cannot be empty";
     }
-    final emailRegex = RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
+    final emailRegex =
+        RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
     if (!emailRegex.hasMatch(email)) {
       return "Enter a valid email";
     }
@@ -142,7 +160,8 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
             },
             child: Text(
               "Forget password?",
-              style: TextStyles.normalStyle.copyWith(color: AppColors.forgetPasswordColor),
+              style: TextStyles.normalStyle
+                  .copyWith(color: AppColors.forgetPasswordColor),
             ),
           ),
         ),
@@ -174,9 +193,8 @@ class _CustomLabelText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: TextStyles.subtitleStyle.copyWith(color: AppColors.subtitleColor)
-    );
+    return Text(text,
+        style:
+            TextStyles.subtitleStyle.copyWith(color: AppColors.subtitleColor));
   }
 }

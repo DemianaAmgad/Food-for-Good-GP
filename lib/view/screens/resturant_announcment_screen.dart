@@ -1,17 +1,13 @@
-// restaurant_announcement_screen
 import 'package:flutter/material.dart';
 import 'package:foodforgood/view/widgets/resturant_announcment_widget.dart';
 
-class ResturantAnnouncmentScreen extends StatefulWidget {
-  const ResturantAnnouncmentScreen({super.key});
+class ResturantAnnouncmentScreen extends StatelessWidget {
+  final String restaurantName;
 
-  @override
-  State<ResturantAnnouncmentScreen> createState() => _ResturantAnnouncmentScreenState();
-}
+  const ResturantAnnouncmentScreen({Key? key, required this.restaurantName}) : super(key: key);
 
-class _ResturantAnnouncmentScreenState extends State<ResturantAnnouncmentScreen> {
   @override
   Widget build(BuildContext context) {
-    return const NewAnnouncementScreen(restaurantName: 'Resturant A',);
+    return NewAnnouncementScreen(restaurantName: restaurantName);
   }
 }

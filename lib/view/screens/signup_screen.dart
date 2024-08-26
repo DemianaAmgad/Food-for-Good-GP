@@ -11,6 +11,7 @@ import '../widgets/signup_form_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
 
@@ -24,14 +25,19 @@ class _SignupScreenState extends State<SignupScreen> {
 
   bool _showSignupForm = true;
   String? _selectedRole;
+  String? _fullName; 
 
-  void _navigateToNextScreen() {
+  void _navigateToNextScreen(String restaurantName, String driverName) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => _selectedRole == "Driver"
-            ? const DriverScreen()  // Navigate to driver screen
-            : const ResturantAnnouncmentScreen(), // Navigate to restaurant UX
+            ? DriverScreen(
+                driverName: driverName,
+              ) // Navigate to driver screen
+            : ResturantAnnouncmentScreen(
+                restaurantName: restaurantName,
+              ), // Navigate to restaurant UX
       ),
     );
   }
@@ -67,10 +73,11 @@ class _SignupScreenState extends State<SignupScreen> {
             child: _showSignupForm
                 ? SignupFormWidget(
                     onContinuePressed: (role, email, password, firstName,
-                        lastName, phone, birthdate) async {
+                        lastName, phone, birthdate, restaurantName) async {
                       setState(() {
                         _selectedRole = role;
                         _showSignupForm = false; // Switch to ScanDocScreen
+                        _fullName = '$firstName $lastName';
                       });
 
                       try {
@@ -83,6 +90,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         // Handle successful user creation
                         User? user = userCredential.user;
                         if (user != null) {
+                          //String fullName = '$firstName $lastName';
+
                           print('User created: ${user.email}');
                           // Store additional user data
                           await _firestore
@@ -95,9 +104,13 @@ class _SignupScreenState extends State<SignupScreen> {
                             'phone': phone,
                             'birthdate': birthdate,
                             'role': role,
+                            'restaurantName': role == 'Restaurant Manager'
+                                ? restaurantName
+                                : '',
                           });
 
-                          _navigateToNextScreen(); // Navigate to the next screen
+                          _navigateToNextScreen(restaurantName,
+                              _fullName!); // Navigate to the next screen
                         }
                       } catch (e) {
                         // Handle errors
@@ -120,8 +133,12 @@ class _SignupScreenState extends State<SignupScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => _selectedRole == "Driver"
-                                ? const DriverScreen()
-                                : const ResturantAnnouncmentScreen()),
+                                ?  DriverScreen(
+                                    driverName: _fullName!,
+                                  )
+                                : const ResturantAnnouncmentScreen(
+                                    restaurantName: '',
+                                  )),
                       );
                       // try {
                       //   final newUser =

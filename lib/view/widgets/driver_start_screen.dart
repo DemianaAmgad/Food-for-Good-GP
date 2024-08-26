@@ -4,14 +4,17 @@ import 'package:foodforgood/view/screens/driver_orders_screen.dart';
 import '../../theme/app_styles.dart';
 
 class DriverStartScreen extends StatelessWidget {
-  const DriverStartScreen({super.key});
+
+  final String driverName;
+
+  const DriverStartScreen({super.key, required this.driverName});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Hi, Sam Harris', style: TextStyles.titleStyle,),
+        title: Text('Hi, $driverName!', style: TextStyles.titleStyle,), // I still need to fix name
       ),
       body: Center(
         child: Padding(
