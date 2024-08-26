@@ -4,7 +4,7 @@ import 'package:foodforgood/view/widgets/custom_text_field_widget.dart';
 import 'package:foodforgood/view/widgets/password_field_widget.dart';
 import 'package:foodforgood/view/widgets/custom_button_widget.dart';
 import '../../theme/app_styles.dart';
-import 'package:foodforgood/view/widgets/custom_text_field_widget.dart';
+// import 'package:foodforgood/view/widgets/custom_text_field_widget.dart';
 
 enum Gender { Male, Female, Other }
 
@@ -19,8 +19,7 @@ class SignupFormWidget extends StatefulWidget {
       String birthdate,
       String restaurantName) onContinuePressed;
 
-  const SignupFormWidget({Key? key, required this.onContinuePressed})
-      : super(key: key);
+  const SignupFormWidget({super.key, required this.onContinuePressed});
 
   @override
   _SignupFormWidgetState createState() => _SignupFormWidgetState();

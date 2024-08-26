@@ -6,7 +6,7 @@ import '../../theme/app_styles.dart';
 class NewAnnouncementScreen extends StatelessWidget {
   final String restaurantName;
   
-  const NewAnnouncementScreen({Key? key, required this.restaurantName}) : super(key: key);
+  const NewAnnouncementScreen({super.key, required this.restaurantName});
 
   @override
   Widget build(BuildContext context) {

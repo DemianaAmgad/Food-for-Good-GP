@@ -4,7 +4,7 @@ import 'package:foodforgood/view/widgets/resturant_announcment_widget.dart';
 class ResturantAnnouncmentScreen extends StatelessWidget {
   final String restaurantName;
 
-  const ResturantAnnouncmentScreen({Key? key, required this.restaurantName}) : super(key: key);
+  const ResturantAnnouncmentScreen({super.key, required this.restaurantName});
 
   @override
   Widget build(BuildContext context) {

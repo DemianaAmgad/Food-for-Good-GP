@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: const _signUpNavigation(),
+      bottomNavigationBar: const _SignUpNavigation(),
     );
   }
 }
@@ -62,8 +62,8 @@ class _Title extends StatelessWidget {
   }
 }
 
-class _signUpNavigation extends StatelessWidget {
-  const _signUpNavigation();
+class _SignUpNavigation extends StatelessWidget {
+  const _SignUpNavigation();
 
   @override
   Widget build(BuildContext context) {

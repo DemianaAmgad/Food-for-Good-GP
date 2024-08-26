@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class AnnouncementDetailsScreen extends StatefulWidget {
   final String restaurantName;
 
-  const AnnouncementDetailsScreen({Key? key, required this.restaurantName}) : super(key: key);
+  const AnnouncementDetailsScreen({super.key, required this.restaurantName});
 
   @override
   _AnnouncementDetailsScreenState createState() => _AnnouncementDetailsScreenState();
@@ -85,7 +85,7 @@ class _AnnouncementDetailsScreenState extends State<AnnouncementDetailsScreen> {
                     decoration: InputDecoration(
                       labelText: 'Unit',
                       labelStyle: TextStyles.fieldStyle.copyWith(fontWeight: FontWeight.w500),
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                     ),
                     onChanged: (value) {
                       setState(() {
@@ -111,7 +111,7 @@ class _AnnouncementDetailsScreenState extends State<AnnouncementDetailsScreen> {
               decoration: InputDecoration(
                 labelText: 'Type',
                 labelStyle: TextStyles.fieldStyle.copyWith(fontWeight: FontWeight.w500),
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
               ),
               onChanged: (value) {
                 setState(() {

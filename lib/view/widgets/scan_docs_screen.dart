@@ -5,7 +5,7 @@ import 'location_picker_screen.dart'; // Import the new location picker screen
 class ScanDocScreen extends StatefulWidget {
   final String? role;
 
-  const ScanDocScreen({Key? key, required this.role}) : super(key: key);
+  const ScanDocScreen({super.key, required this.role});
 
   @override
   _ScanDocScreenState createState() => _ScanDocScreenState();
@@ -61,7 +61,7 @@ class _ScanDocScreenState extends State<ScanDocScreen> {
                     child: Text(
                       scanButtonText,
                       textAlign: TextAlign.left,
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.black),
                     ),
                   ),
                   const SizedBox(width: 8.0),
@@ -79,7 +79,7 @@ class _ScanDocScreenState extends State<ScanDocScreen> {
                 final pickedLocation = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LocationPickerScreen(), // Create the LocationPickerScreen
+                    builder: (context) => const LocationPickerScreen(), // Create the LocationPickerScreen
                   ),
                 );
                 if (pickedLocation != null) {
@@ -95,7 +95,7 @@ class _ScanDocScreenState extends State<ScanDocScreen> {
                     child: Text(
                       setLocationButtonText,
                       textAlign: TextAlign.left,
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.black),
                     ),
                   ),
                   const SizedBox(width: 8.0),
