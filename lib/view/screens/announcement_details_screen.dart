@@ -9,7 +9,8 @@ class AnnouncementDetailsScreen extends StatefulWidget {
   const AnnouncementDetailsScreen({super.key, required this.restaurantName});
 
   @override
-  _AnnouncementDetailsScreenState createState() => _AnnouncementDetailsScreenState();
+  _AnnouncementDetailsScreenState createState() =>
+      _AnnouncementDetailsScreenState();
 }
 
 class _AnnouncementDetailsScreenState extends State<AnnouncementDetailsScreen> {
@@ -23,11 +24,13 @@ class _AnnouncementDetailsScreenState extends State<AnnouncementDetailsScreen> {
     final quantityAsInt = quantity.toInt();
 
     await firestore.collection('announcements').add({
-      'restaurantName': widget.restaurantName,  // Use widget.restaurantName
-      'location': '123 Main St', 
+      'restaurantName': widget.restaurantName,
+      'location': '123 Main St',
       'quantity': quantityAsInt,
       'unit': _selectedUnit,
       'type': _selectedType,
+      'pickedUp': false,
+      'delivered': false,
       'acceptedBy': null,
       'rejectedBy': [],
     }).then((_) {
@@ -49,31 +52,45 @@ class _AnnouncementDetailsScreenState extends State<AnnouncementDetailsScreen> {
         centerTitle: true,
         title: Text(
           'Details',
-          style: TextStyles.titleStyle,
+          style: TextStyles.titleStyle.copyWith(
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+            color: AppColors.buttonAcceptBackgroundColor,
+          ),
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Restaurant: ${widget.restaurantName}', // Display the restaurant name
-              style: TextStyles.fieldStyle.copyWith(fontWeight: FontWeight.w700),
+              'Restaurant: ${widget.restaurantName}',
+              style: TextStyles.fieldStyle.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 18.0,
+              ),
             ),
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 16.0),
             Row(
               children: [
                 Expanded(
                   flex: 2,
                   child: TextField(
-                    style: TextStyles.fieldStyle.copyWith(fontWeight: FontWeight.w700),
+                    style: TextStyles.fieldStyle.copyWith(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16.0,
+                    ),
                     controller: _amountController,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: 'Amount',
-                      labelStyle: TextStyles.fieldStyle.copyWith(fontWeight: FontWeight.w500),
-                      border: const OutlineInputBorder(),
+                      labelStyle: TextStyles.fieldStyle.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
                     ),
                   ),
                 ),
@@ -84,20 +101,28 @@ class _AnnouncementDetailsScreenState extends State<AnnouncementDetailsScreen> {
                     value: _selectedUnit,
                     decoration: InputDecoration(
                       labelText: 'Unit',
-                      labelStyle: TextStyles.fieldStyle.copyWith(fontWeight: FontWeight.w500),
-                      border: const OutlineInputBorder(),
+                      labelStyle: TextStyles.fieldStyle.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
                     ),
                     onChanged: (value) {
                       setState(() {
                         _selectedUnit = value!;
                       });
                     },
-                    items: <String>['kg', 'g', 'lb', 'oz'].map<DropdownMenuItem<String>>((String value) {
+                    items: <String>['kg', 'g', 'lb', 'oz']
+                        .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(
                           value,
-                          style: TextStyles.fieldStyle.copyWith(fontWeight: FontWeight.w700),
+                          style: TextStyles.fieldStyle.copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16.0,
+                          ),
                         ),
                       );
                     }).toList(),
@@ -105,25 +130,33 @@ class _AnnouncementDetailsScreenState extends State<AnnouncementDetailsScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 20.0),
             DropdownButtonFormField<String>(
               value: _selectedType,
               decoration: InputDecoration(
                 labelText: 'Type',
-                labelStyle: TextStyles.fieldStyle.copyWith(fontWeight: FontWeight.w500),
-                border: const OutlineInputBorder(),
+                labelStyle: TextStyles.fieldStyle.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
               ),
               onChanged: (value) {
                 setState(() {
                   _selectedType = value!;
                 });
               },
-              items: <String>['Organic', 'Non-Organic'].map<DropdownMenuItem<String>>((String value) {
+              items: <String>['Organic', 'Non-Organic']
+                  .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(
                     value,
-                    style: TextStyles.fieldStyle.copyWith(fontWeight: FontWeight.w700),
+                    style: TextStyles.fieldStyle.copyWith(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16.0,
+                    ),
                   ),
                 );
               }).toList(),
