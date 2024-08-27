@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:foodforgood/view/screens/driver_orders_screen.dart';
 import '../../theme/app_styles.dart';
 import '../screens/accepted_requests_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import '../screens/profile_screen.dart';
 
 class DriverStartScreen extends StatelessWidget {
   final String driverName;
@@ -15,15 +18,56 @@ class DriverStartScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.signupColor,
         automaticallyImplyLeading: false,
-        title: Text(
-          'Hi, $driverName!',
-          style: TextStyles.titleStyle.copyWith(
-            fontSize: 24.0,
-            fontWeight: FontWeight.bold,
-            color: AppColors.titleColor
-          ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              'Hi, $driverName!',
+              style: TextStyles.titleStyle.copyWith(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.titleColor),
+            ),
+          ],
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.account_circle,
+              size: 28.0,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+              );
+            },
+          ),
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              if (value == 'Logout') {
+                FirebaseAuth.instance.signOut();
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return {'Logout'}.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(
+                    choice,
+                  ),
+                );
+              }).toList();
+            },
+            icon: const Icon(
+              Icons.menu,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
       body: Center(
         child: Padding(
