@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:foodforgood/view/screens/driver_orders_screen.dart';
-
 import '../../theme/app_styles.dart';
+import '../screens/accepted_requests_screen.dart';
 
 class DriverStartScreen extends StatelessWidget {
-
   final String driverName;
 
   const DriverStartScreen({super.key, required this.driverName});
@@ -12,9 +11,19 @@ class DriverStartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.signupColor,
       appBar: AppBar(
+        backgroundColor: AppColors.signupColor,
         automaticallyImplyLeading: false,
-        title: Text('Hi, $driverName!', style: TextStyles.titleStyle,), // I still need to fix name
+        title: Text(
+          'Hi, $driverName!',
+          style: TextStyles.titleStyle.copyWith(
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+            color: AppColors.titleColor
+          ),
+        ),
+        centerTitle: true,
       ),
       body: Center(
         child: Padding(
@@ -25,7 +34,35 @@ class DriverStartScreen extends StatelessWidget {
               Text(
                 'Are you available to deliver from restaurants to factories right now?',
                 textAlign: TextAlign.center,
-                style: TextStyles.subtitleStyle,
+                style: TextStyles.subtitleStyle.copyWith(
+                  fontSize: 18.0,
+                  color: AppColors.titleColor,
+                ),
+              ),
+              const SizedBox(height: 40.0),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const DriverOrdersScreen()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  backgroundColor: AppColors.buttonLoginBackgroundColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+                child: Text(
+                  'Start',
+                  style: TextStyles.buttonTextStyle.copyWith(
+                    color: AppColors.confirmButtonTextColor,
+                    fontSize: 20.0,
+                  ),
+                ),
               ),
             ],
           ),
@@ -34,19 +71,29 @@ class DriverStartScreen extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SizedBox(
-          width: 80,
-          height: 80,
-          child: FloatingActionButton(
+          width: double.infinity,
+          child: ElevatedButton(
             onPressed: () {
-              print('Start delivery');
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const DriverOrdersScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const AcceptedRequestsPage()),
               );
             },
-            backgroundColor: AppColors.buttonLoginBackgroundColor,
-            shape: const CircleBorder(),
-            child: Text("Start", style: TextStyles.buttonTextStyle.copyWith(color: AppColors.buttonLoginTextColor),),
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              backgroundColor: AppColors.confirmButtonTextColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+            child: Text(
+              "Go to acccepted announcements",
+              style: TextStyles.buttonTextStyle.copyWith(
+                color: AppColors.buttonLoginBackgroundColor,
+                fontSize: 20.0,
+              ),
+            ),
           ),
         ),
       ),
