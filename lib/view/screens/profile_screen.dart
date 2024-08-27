@@ -20,7 +20,7 @@ class ProfileScreen extends StatelessWidget {
           children: [
             const CircleAvatar(
               radius: 50,
-              backgroundImage: NetworkImage('https://example.com/path_to_image.jpg'),
+              backgroundImage: NetworkImage(''), // image path
             ),
             const SizedBox(height: 10),
             const Text(
@@ -40,7 +40,7 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 10),
             const Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children:  [
+              children: [
                 Icon(
                   Icons.circle,
                   color: Colors.green,
@@ -52,20 +52,38 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             const Divider(),
-            const ListTile(
-              leading: Icon(Icons.person),
-              title: Text('Username'),
-              subtitle: Text('Morgan.JamesDesigner'),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('Username'),
+              subtitle: const Text('Morgan.JamesDesigner'),
+              trailing: IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () {
+                  // Add your edit action here
+                },
+              ),
             ),
-            const ListTile(
-              leading: Icon(Icons.phone),
-              title: Text('Contact'),
-              subtitle: Text('+24500000000'),
+            ListTile(
+              leading: const Icon(Icons.phone),
+              title: const Text('Contact'),
+              subtitle: const Text('+24500000000'),
+              trailing: IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () {
+                  // Add your edit action here
+                },
+              ),
             ),
-            const ListTile(
-              leading: Icon(Icons.email),
-              title: Text('Email'),
-              subtitle: Text('mjdesigner@gmail.com'),
+            ListTile(
+              leading: const Icon(Icons.email),
+              title: const Text('Email'),
+              subtitle: const Text('mjdesigner@gmail.com'),
+              trailing: IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () {
+                  // Add your edit action here
+                },
+              ),
             ),
             const Divider(),
             const Text(
@@ -75,13 +93,12 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            const Column(
               children: [
-                _buildSocialIconButton(Icons.twelve_mp_sharp, Colors.lightBlue),
-                _buildSocialIconButton(Icons.ice_skating, Colors.pink),
-                _buildSocialIconButton(Icons.facebook, Colors.blue),
-                _buildSocialIconButton(Icons.linked_camera, Colors.blueAccent),
+                Text('data'),
+                Text('data'),
+                Text('data'),
+                Text('data'),
               ],
             ),
             const Spacer(),
