@@ -46,4 +46,5 @@ class AppColors {
   static const buttonAcceptBackgroundColor = Colors.teal;
   static const buttonRejectBackgroundColor = Colors.pink;
   static const cardTextColor = Colors.white70;
+  static const iconColor = Colors.grey;
 }
