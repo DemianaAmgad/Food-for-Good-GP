@@ -52,18 +52,20 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
           // Navigate based on the role
           if (role == 'Restaurant Manager') {
             String restaurantName = userDoc.get('restaurantName');
-            Navigator.pushReplacement(
+            Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                  builder: (context) => ResturantAnnouncmentScreen(
-                      restaurantName: restaurantName)),
+                builder: (context) => ResturantAnnouncmentScreen(
+                  restaurantName: restaurantName,
+                ),
+              ),
+              (route) => false, // Remove all previous routes to stay logged in
             );
           } else if (role == 'Driver') {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      DriverScreen(driverName: fullName)),
+                  builder: (context) => DriverScreen(driverName: fullName)),
             );
           }
         }
