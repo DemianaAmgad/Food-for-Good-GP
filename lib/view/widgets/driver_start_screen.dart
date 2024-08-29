@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodforgood/view/screens/driver_orders_screen.dart';
+import 'package:foodforgood/view/screens/settings_screen.dart';
 import '../../theme/app_styles.dart';
 import '../screens/accepted_requests_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -47,20 +48,59 @@ class DriverStartScreen extends StatelessWidget {
           ),
           PopupMenuButton<String>(
             onSelected: (value) {
-              if (value == 'Logout') {
+              if (value == 'Profile') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ProfileScreen()),
+                );
+              } else if (value == 'Settings') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SettingsScreen()),
+                );
+              } else if (value == 'Logout') {
                 FirebaseAuth.instance.signOut();
                 Navigator.of(context).popUntil((route) => route.isFirst);
               }
             },
             itemBuilder: (BuildContext context) {
-              return {'Logout'}.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(
-                    choice,
+              return [
+                const PopupMenuItem<String>(
+                  value: 'Profile',
+                  child: Row(
+                    children: [
+                      Icon(Icons.account_circle, color: Colors.black),
+                      SizedBox(
+                          width: 8), // Adds some space between icon and text
+                      Text('Profile'),
+                    ],
                   ),
-                );
-              }).toList();
+                ),
+                const PopupMenuItem<String>(
+                  value: 'Settings',
+                  child: Row(
+                    children: [
+                      Icon(Icons.settings, color: Colors.black),
+                      SizedBox(
+                          width: 8), // Adds some space between icon and text
+                      Text('Settings'),
+                    ],
+                  ),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'Logout',
+                  child: Row(
+                    children: [
+                      Icon(Icons.logout, color: Colors.black),
+                      SizedBox(
+                          width: 8), // Adds some space between icon and text
+                      Text('Logout'),
+                    ],
+                  ),
+                )
+              ];
             },
             icon: const Icon(
               Icons.menu,

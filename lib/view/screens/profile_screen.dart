@@ -176,8 +176,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const Text(
-              'Driver', // Replace with actual role if needed
+             Text(
+              userData!['role'] ?? 'No first name', // Replace with actual role if needed
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey,

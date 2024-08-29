@@ -30,6 +30,7 @@ dependencies:
   google_sign_in: ^6.2.1
   image_picker: ^0.8.4+6
   google_maps_flutter: ^2.1.1
+  # easy_localization: ^3.0.0
   
 
 dev_dependencies:
