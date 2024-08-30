@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodforgood/view/screens/welcome_screen.dart';
-import 'package:foodforgood/view/screens/login_screen.dart';
 import 'package:foodforgood/view/screens/driver_screen.dart'; 
 import 'package:foodforgood/view/screens/resturant_announcment_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -58,7 +57,7 @@ class MyApp extends StatelessWidget {
               );
             } else {
               // User is not signed in
-              return LoginScreen();
+              return WelcomeScreen();
             }
           }
           // While loading

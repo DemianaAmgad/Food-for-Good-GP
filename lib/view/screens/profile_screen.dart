@@ -144,43 +144,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
+        child: ListView( // this was padding and I need to fix the edit icon position
           children: [
-            Stack(
-              children: [
-                CircleAvatar(
-                  radius: 50,
-                  backgroundImage: userData!['profilePictureUrl'] != null &&
-                          userData!['profilePictureUrl'].isNotEmpty
-                      ? NetworkImage(userData!['profilePictureUrl'])
-                      : AssetImage('images/default_profile_picture.jpeg')
-                          as ImageProvider,
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: -16,
-                  child: IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: _changeProfilePicture,
+            Center(
+              child: Stack(
+                children: [
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundImage: userData!['profilePictureUrl'] != null &&
+                            userData!['profilePictureUrl'].isNotEmpty
+                        ? NetworkImage(userData!['profilePictureUrl'])
+                        : AssetImage('images/default_profile_picture.jpeg')
+                            as ImageProvider,
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Text(
-              '${userData!['firstName'] ?? ''} ${userData!['lastName'] ?? ''}'
-                  .trim(),
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+                  Positioned(
+                    bottom: 0,
+                    left: 65,
+                    child: IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: _changeProfilePicture,
+                    ),
+                  ),
+                ],
               ),
             ),
-            Text(
-              userData!['role'] ??
-                  'No first name', // Replace with actual role if needed
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
+            const SizedBox(height: 10),
+            Center(
+              child: Text(
+                '${userData!['firstName'] ?? ''} ${userData!['lastName'] ?? ''}'
+                    .trim(),
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Center(
+              child: Text(
+                userData!['role'] ??
+                    'No first name', // Replace with actual role if needed
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                ),
               ),
             ),
             const SizedBox(height: 10),
@@ -239,12 +245,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const Divider(),
-            // const Text(
-            //   'Other Ways People Can Find Me',
-            //   style: TextStyle(
-            //     fontWeight: FontWeight.bold,
-            //   ),
-            // ),
+
             const SizedBox(height: 10),
             // Social media icons or additional information can go here
             const Spacer(),

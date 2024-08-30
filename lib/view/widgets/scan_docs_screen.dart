@@ -12,14 +12,22 @@ class ScanDocScreen extends StatefulWidget {
 }
 
 class _ScanDocScreenState extends State<ScanDocScreen> {
-  final ImagePicker _picker = ImagePicker(); // Initialize ImagePicker for scanning
+  final ImagePicker _picker = ImagePicker();
 
-  // Method to pick an image from the camera
   Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.camera); // Open the camera
-    if (pickedFile != null) {
-      // Handle the picked image, e.g., upload it
-      print('Image picked: ${pickedFile.path}'); // Print the path of the picked image
+    try {
+      final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+      if (pickedFile != null) {
+        print('Image picked: ${pickedFile.path}');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('No image selected')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to pick image: $e')),
+      );
     }
   }
 
@@ -28,7 +36,6 @@ class _ScanDocScreenState extends State<ScanDocScreen> {
     String scanButtonText = '';
     String setLocationButtonText = '';
 
-    // Set button texts based on the role
     switch (widget.role) {
       case 'Restaurant Manager':
         scanButtonText = 'Scan Restaurant License';
@@ -51,7 +58,7 @@ class _ScanDocScreenState extends State<ScanDocScreen> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: _pickImage, // Call _pickImage method to scan document
+              onPressed: _pickImage,
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
               ),
@@ -65,7 +72,7 @@ class _ScanDocScreenState extends State<ScanDocScreen> {
                     ),
                   ),
                   const SizedBox(width: 8.0),
-                  const Icon(Icons.camera_alt, color: Colors.black), // Camera icon
+                  const Icon(Icons.camera_alt, color: Colors.black),
                 ],
               ),
             ),
@@ -75,15 +82,14 @@ class _ScanDocScreenState extends State<ScanDocScreen> {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () async {
-                // Navigate to the location picker screen
                 final pickedLocation = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const LocationPickerScreen(), // Create the LocationPickerScreen
+                    builder: (context) => const LocationPickerScreen(),
                   ),
                 );
                 if (pickedLocation != null) {
-                  print('Picked location: $pickedLocation'); // Print the picked location
+                  print('Picked location: $pickedLocation');
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -99,7 +105,7 @@ class _ScanDocScreenState extends State<ScanDocScreen> {
                     ),
                   ),
                   const SizedBox(width: 8.0),
-                  const Icon(Icons.location_on, color: Colors.black), // Location icon
+                  const Icon(Icons.location_on, color: Colors.black),
                 ],
               ),
             ),

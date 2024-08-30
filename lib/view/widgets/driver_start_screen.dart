@@ -1,16 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:foodforgood/view/screens/driver_orders_screen.dart';
 import 'package:foodforgood/view/screens/settings_screen.dart';
 import '../../theme/app_styles.dart';
 import '../screens/accepted_requests_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
 import '../screens/profile_screen.dart';
 
-class DriverStartScreen extends StatelessWidget {
+class DriverStartScreen extends StatefulWidget {
   final String driverName;
 
   const DriverStartScreen({super.key, required this.driverName});
+
+  @override
+  _DriverStartScreenState createState() => _DriverStartScreenState();
+}
+
+class _DriverStartScreenState extends State<DriverStartScreen> {
+  String? profilePictureUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfilePicture();
+  }
+
+  Future<void> _loadProfilePicture() async {
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+      setState(() {
+        profilePictureUrl = userDoc['profilePictureUrl'] ?? '';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,30 +48,52 @@ class DriverStartScreen extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            // if (profilePictureUrl != null && profilePictureUrl!.isNotEmpty)
+            //   CircleAvatar(
+            //     radius: 20,
+            //     backgroundImage: NetworkImage(profilePictureUrl!),
+            //   ),
+            const SizedBox(width: 10),
             Text(
-              'Hi, $driverName!',
+              'Hi, ${widget.driverName}!',
               style: TextStyles.titleStyle.copyWith(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.titleColor),
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+                color: AppColors.titleColor,
+              ),
             ),
           ],
         ),
         centerTitle: true,
         actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.account_circle,
-              size: 28.0,
-              color: Colors.white,
+          // IconButton(
+          //   icon: const Icon(
+          //     Icons.account_circle,
+          //     size: 28.0,
+          //     color: Colors.white,
+          //   ),
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => const ProfileScreen()),
+          //     );
+          //   },
+          // ),
+          if (profilePictureUrl != null && profilePictureUrl!.isNotEmpty)
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ProfileScreen()),
+                );
+              },
+              child: CircleAvatar(
+                radius: 15,
+                backgroundImage: NetworkImage(profilePictureUrl!),
+              ),
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ProfileScreen()),
-              );
-            },
-          ),
+
           PopupMenuButton<String>(
             onSelected: (value) {
               if (value == 'Profile') {
@@ -72,8 +120,7 @@ class DriverStartScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       Icon(Icons.account_circle, color: Colors.black),
-                      SizedBox(
-                          width: 8), // Adds some space between icon and text
+                      SizedBox(width: 8),
                       Text('Profile'),
                     ],
                   ),
@@ -83,8 +130,7 @@ class DriverStartScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       Icon(Icons.settings, color: Colors.black),
-                      SizedBox(
-                          width: 8), // Adds some space between icon and text
+                      SizedBox(width: 8),
                       Text('Settings'),
                     ],
                   ),
@@ -94,8 +140,7 @@ class DriverStartScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       Icon(Icons.logout, color: Colors.black),
-                      SizedBox(
-                          width: 8), // Adds some space between icon and text
+                      SizedBox(width: 8),
                       Text('Logout'),
                     ],
                   ),
@@ -172,7 +217,7 @@ class DriverStartScreen extends StatelessWidget {
               ),
             ),
             child: Text(
-              "Go to acccepted announcements",
+              "Go to accepted announcements",
               style: TextStyles.buttonTextStyle.copyWith(
                 color: AppColors.buttonLoginBackgroundColor,
                 fontSize: 20.0,

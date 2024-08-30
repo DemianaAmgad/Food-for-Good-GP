@@ -1,9 +1,12 @@
 // signup_form_widget.dart
 import 'package:flutter/material.dart';
+import 'package:foodforgood/view/screens/resturant_announcment_screen.dart';
 import 'package:foodforgood/view/widgets/custom_text_field_widget.dart';
 import 'package:foodforgood/view/widgets/password_field_widget.dart';
 import 'package:foodforgood/view/widgets/custom_button_widget.dart';
+import 'package:foodforgood/view/widgets/scan_docs_screen.dart';
 import '../../theme/app_styles.dart';
+import '../screens/driver_screen.dart';
 // import 'package:foodforgood/view/widgets/custom_text_field_widget.dart';
 
 enum Gender { Male, Female, Other }
@@ -38,6 +41,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
 
   Gender _selectedGender = Gender.Male;
   String? _selectedRole;
+  Widget? _scanDocScreen;
 
   String? _emailError;
   String? _firstNameError;
@@ -64,6 +68,8 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
 
   // Getter for password
   String get password => _passwordController.text;
+
+  get firstName => null;
 
   @override
   void initState() {
@@ -330,6 +336,16 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
     return null;
   }
 
+  void _updateScanDocScreen() {
+    setState(() {
+      if (_selectedRole != null) {
+        _scanDocScreen = ScanDocScreen(role: _selectedRole!);
+      } else {
+        _scanDocScreen = null;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -550,6 +566,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
             onChanged: (String? newValue) {
               setState(() {
                 _selectedRole = newValue;
+                _updateScanDocScreen();
               });
               _validateForm(); // Validate form whenever role is changed
             },
@@ -590,6 +607,11 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
               ],
             ),
           ),
+        if (_scanDocScreen != null) // Show ScanDocScreen if it is not null
+          SizedBox(
+            height: 200.0, // Adjust height as needed
+            child: _scanDocScreen,
+          ),
         SizedBox(
           width: double.infinity,
           child: CustomButtonWidget(
@@ -598,8 +620,19 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
               if (_isSignupButtonActive) {
                 _handleSignup();
               }
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => _selectedRole == "Driver"
+                        ? DriverScreen(
+                            driverName: firstName,
+                          )
+                        : const ResturantAnnouncmentScreen(
+                            restaurantName: '',
+                          )),
+              );
             },
-            text: "Continue",
+            text: "Sign Up",
           ),
         ),
       ],
