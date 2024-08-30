@@ -23,6 +23,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
   final _passwordController = TextEditingController();
   String? _emailError;
   String? _passwordError;
+  String? _errorMessage;
 
   Future<void> _login() async {
     try {
@@ -78,6 +79,13 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
             e.code == 'user-not-found' ? "No user found with this email" : null;
         _passwordError =
             e.code == 'wrong-password' ? "Incorrect password" : null;
+        if (e.code == 'user-not-found') {
+          _errorMessage = 'No user found for that email.';
+        } else if (e.code == 'wrong-password') {
+          _errorMessage = 'Wrong password provided.';
+        } else {
+          _errorMessage = 'An error occurred. Please try again.\nYour email or password might not be true';
+        }
       });
     } catch (e) {
       // Handle general errors
@@ -183,6 +191,14 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
             textColor: AppColors.buttonLoginTextColor,
           ),
         ),
+        if (_errorMessage != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Text(
+              _errorMessage!,
+              style: const TextStyle(color: Colors.red),
+            ),
+          ),
       ],
     );
   }

@@ -123,7 +123,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     if (userData == null) {
@@ -159,9 +158,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 Positioned(
                   bottom: 0,
-                  right: 0,
+                  right: -16,
                   child: IconButton(
-                    icon: const Icon(Icons.edit, color: Colors.blue),
+                    icon: const Icon(Icons.edit),
                     onPressed: _changeProfilePicture,
                   ),
                 ),
@@ -176,8 +175,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-             Text(
-              userData!['role'] ?? 'No first name', // Replace with actual role if needed
+            Text(
+              userData!['role'] ??
+                  'No first name', // Replace with actual role if needed
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey,
@@ -239,12 +239,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const Divider(),
-            const Text(
-              'Other Ways People Can Find Me',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            // const Text(
+            //   'Other Ways People Can Find Me',
+            //   style: TextStyle(
+            //     fontWeight: FontWeight.bold,
+            //   ),
+            // ),
             const SizedBox(height: 10),
             // Social media icons or additional information can go here
             const Spacer(),
