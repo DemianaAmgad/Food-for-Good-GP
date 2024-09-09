@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class UpdatesPage extends StatefulWidget {
+  const UpdatesPage({super.key});
+
   @override
   _UpdatesPageState createState() => _UpdatesPageState();
 }
@@ -25,26 +27,26 @@ class _UpdatesPageState extends State<UpdatesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Check for Updates'),
+        title: const Text('Check for Updates'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
             ListTile(
-              title: Text('Current Version'),
+              title: const Text('Current Version'),
               subtitle: Text(_currentVersion),
-              leading: Icon(Icons.info),
+              leading: const Icon(Icons.info),
             ),
             ListTile(
-              title: Text('Available Update'),
+              title: const Text('Available Update'),
               subtitle: Text(_hasUpdate ? 'Version $_updateVersion' : 'No updates available'),
-              leading: Icon(Icons.update),
+              leading: const Icon(Icons.update),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _checkForUpdates,
-              child: Text('Check for Updates'),
+              child: const Text('Check for Updates'),
             ),
           ],
         ),

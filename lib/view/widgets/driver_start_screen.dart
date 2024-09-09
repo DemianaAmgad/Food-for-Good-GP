@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:foodforgood/view/screens/driver_orders_screen.dart';
+import 'package:foodforgood/view/screens/login_screen.dart';
 import 'package:foodforgood/view/screens/settings_screen.dart';
 import '../../theme/app_styles.dart';
 import '../screens/accepted_requests_screen.dart';
@@ -66,19 +67,19 @@ class _DriverStartScreenState extends State<DriverStartScreen> {
         ),
         centerTitle: true,
         actions: [
-          // IconButton(
-          //   icon: const Icon(
-          //     Icons.account_circle,
-          //     size: 28.0,
-          //     color: Colors.white,
-          //   ),
-          //   onPressed: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(builder: (context) => const ProfileScreen()),
-          //     );
-          //   },
-          // ),
+          IconButton(
+            icon: const Icon(
+              Icons.account_circle,
+              size: 28.0,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+              );
+            },
+          ),
           if (profilePictureUrl != null && profilePictureUrl!.isNotEmpty)
             GestureDetector(
               onTap: () {
@@ -109,8 +110,21 @@ class _DriverStartScreenState extends State<DriverStartScreen> {
                       builder: (context) => const SettingsScreen()),
                 );
               } else if (value == 'Logout') {
-                FirebaseAuth.instance.signOut();
-                Navigator.of(context).popUntil((route) => route.isFirst);
+                // Sign out the user
+                FirebaseAuth.instance.signOut().then((_) {
+                  // Navigate to login screen after sign out
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LoginScreen()),
+                    (Route<dynamic> route) => false,
+                  );
+                }).catchError((e) {
+                  // Handle errors
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Failed to log out: $e')),
+                  );
+                });
               }
             },
             itemBuilder: (BuildContext context) {

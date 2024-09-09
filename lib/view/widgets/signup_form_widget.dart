@@ -37,7 +37,8 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   final _lastNameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _pinController = TextEditingController();
-  final _restaurantNameController = TextEditingController(); // recently added
+  final _restaurantNameController = TextEditingController();
+  final _hotelNameController = TextEditingController();
 
   Gender _selectedGender = Gender.Male;
   String? _selectedRole;
@@ -52,6 +53,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   String? _phoneError;
   String? _pinError;
   String? _restaurantNameError;
+  String? _hotelNameError;
   bool _isPhoneConfirmed = false;
   bool _isSignupButtonActive = false;
 
@@ -136,6 +138,19 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
     });
   }
 
+  void _validateHotelName() {
+    setState(() {
+      _hotelNameError = _validateHotelNameText(_hotelNameController.text);
+    });
+  }
+
+  String? _validateHotelNameText(String hotelName) {
+    if (_selectedRole == 'Hotel Manager' && hotelName.isEmpty) {
+      return "Hotel name cannot be empty";
+    }
+    return null;
+  }
+
   void _validateForm() {
     setState(() {
       _emailError = _validateEmailText(_emailController.text);
@@ -150,6 +165,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
       _lastNameError = _validateLastNameText(_lastNameController.text);
       _restaurantNameError =
           _validateRestaurantNameText(_restaurantNameController.text);
+      _hotelNameError = _validateHotelNameText(_hotelNameController.text);
 
       _isSignupButtonActive = _emailError == null &&
           _passwordError == null &&
@@ -163,8 +179,10 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
           _selectedRole != null &&
           _pinController.text == '0000' &&
           _isPhoneConfirmed == true &&
-          (_selectedRole != 'Restaurant Manager' ||
-              _restaurantNameController.text.isNotEmpty);
+          ((_selectedRole == 'Restaurant Manager' &&
+                  _restaurantNameController.text.isNotEmpty) ||
+              (_selectedRole == 'Hotel Manager' &&
+                  _hotelNameController.text.isNotEmpty));
     });
   }
 
@@ -258,7 +276,9 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
         _birthdateController.text,
         _selectedRole == 'Restaurant Manager'
             ? _restaurantNameController.text
-            : '',
+            : _selectedRole == 'Hotel Manager'
+                ? _hotelNameController.text
+                : '',
       );
     }
   }
@@ -572,7 +592,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
             },
             icon: const Icon(Icons.arrow_drop_down),
             isExpanded: true,
-            items: <String>['Restaurant Manager', 'Driver', 'Factory Manager']
+            items: <String>['Restaurant Manager', 'Driver', 'Hotel Manager']
                 .map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
@@ -607,6 +627,26 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
               ],
             ),
           ),
+        if (_selectedRole ==
+            'Hotel Manager') // Show only if role is Hotel Manager
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const _CustomLabelText("Hotel Name"),
+                const SizedBox(height: 8),
+                CustomTextFieldWidget(
+                  controller: _hotelNameController,
+                  hintText: "Enter hotel name",
+                  errorText: _hotelNameError,
+                  onChanged: (text) {
+                    _validateHotelName();
+                  },
+                ),
+              ],
+            ),
+          ),
         if (_scanDocScreen != null) // Show ScanDocScreen if it is not null
           SizedBox(
             height: 200.0, // Adjust height as needed
@@ -620,17 +660,16 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
               if (_isSignupButtonActive) {
                 _handleSignup();
               }
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => _selectedRole == "Driver"
-                        ? DriverScreen(
-                            driverName: firstName,
-                          )
-                        : const ResturantAnnouncmentScreen(
-                            restaurantName: '',
-                          )),
-              );
+Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => _selectedRole == "Driver"
+        ? DriverScreen(driverName: firstName)
+        : _selectedRole == 'Hotel Manager'
+            ? ResturantAnnouncmentScreen(restaurantName: _hotelNameController.text)
+            : const ResturantAnnouncmentScreen(restaurantName: ''),
+  ),
+);
             },
             text: "Sign Up",
           ),

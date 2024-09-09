@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
 import 'package:flutter/material.dart';
 import 'package:foodforgood/view/screens/announcement_details_screen.dart';
+import 'package:foodforgood/view/screens/login_screen.dart';
 import 'package:foodforgood/view/screens/profile_screen.dart';
 import 'package:foodforgood/view/screens/settings_screen.dart';
 
@@ -11,8 +13,36 @@ class NewAnnouncementScreen extends StatelessWidget {
 
   const NewAnnouncementScreen({super.key, required this.restaurantName});
 
+  Future<String> _getProfilePictureUrl(String userId) async {
+    try {
+      // Get user document from Firestore
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+
+      // Check if the user document exists and has a profile picture URL
+      if (userDoc.exists) {
+        String? profilePictureUrl = userDoc['profilePictureUrl'];
+        if (profilePictureUrl != null) {
+          // Return the profile picture URL
+          return profilePictureUrl;
+        }
+      }
+
+      // Return default profile picture URL if no profile picture URL is found
+      return 'images/default_profile_picture.jpeg';
+    } catch (e) {
+      // Handle any errors (e.g., network issues)
+      print('Error fetching profile picture URL: $e');
+      return 'images/default_profile_picture.jpeg'; // Return default if error occurs
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.signupColor,
@@ -31,19 +61,66 @@ class NewAnnouncementScreen extends StatelessWidget {
         ),
         centerTitle: true,
         actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.account_circle,
-              size: 28.0,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ProfileScreen()),
-              );
+          ///////////////////
+          FutureBuilder<String>(
+            future: _getProfilePictureUrl(userId),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                ); // Show loading spinner while fetching
+              } else if (snapshot.hasError) {
+                return Icon(
+                  Icons.error,
+                  color: Colors.red,
+                  size: 28.0,
+                ); // Show error icon if there's an error
+              } else if (snapshot.hasData) {
+                return IconButton(
+                  icon: CircleAvatar(
+                    backgroundImage: snapshot.data != null
+                        ? NetworkImage(snapshot.data!)
+                        : AssetImage('images/default_profile_picture.jpeg') as ImageProvider,
+                    radius: 14.0, // Adjust the radius to fit your needs
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                    );
+                  },
+                );
+              } else {
+                return IconButton(
+                  icon: CircleAvatar(
+                    backgroundImage: AssetImage('images/default_profile_picture.jpeg'),
+                    radius: 14.0, // Adjust the radius to fit your needs
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                    );
+                  },
+                ); // Show default image if no data is available
+              }
             },
           ),
+          /////////////////
+          
+          // IconButton(
+          //   icon: const Icon(
+          //     Icons.account_circle,
+          //     size: 28.0,
+          //     color: Colors.white,
+          //   ),
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => const ProfileScreen()),
+          //     );
+          //   },
+          // ),
           PopupMenuButton<String>(
             onSelected: (value) {
               if (value == 'Profile') {
@@ -59,8 +136,21 @@ class NewAnnouncementScreen extends StatelessWidget {
                       builder: (context) => const SettingsScreen()),
                 );
               } else if (value == 'Logout') {
-                FirebaseAuth.instance.signOut();
-                Navigator.of(context).popUntil((route) => route.isFirst);
+                // Sign out the user
+                FirebaseAuth.instance.signOut().then((_) {
+                  // Navigate to login screen after sign out
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LoginScreen()),
+                    (Route<dynamic> route) => false,
+                  );
+                }).catchError((e) {
+                  // Handle errors
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Failed to log out: $e')),
+                  );
+                });
               }
             },
             itemBuilder: (BuildContext context) {

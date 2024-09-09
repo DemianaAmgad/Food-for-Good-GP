@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class LanguagePage extends StatefulWidget {
+  const LanguagePage({super.key});
+
   @override
   _LanguagePageState createState() => _LanguagePageState();
 }

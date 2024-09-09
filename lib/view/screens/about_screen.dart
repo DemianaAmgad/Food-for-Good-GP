@@ -1,47 +1,49 @@
 import 'package:flutter/material.dart';
 
 class AboutPage extends StatelessWidget {
+  const AboutPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('About Us'),
+        title: const Text('About Us'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
+            const Text(
               'About This App',
             ),
-            SizedBox(height: 10),
-            Text(
+            const SizedBox(height: 10),
+            const Text(
               'Version: 1.0.0',
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Developed by:',
             ),
-            Text(
+            const Text(
               'Food for Good',
             ),
-            Text(
-              '820 N 17th st, Suite 100\Lincoln, Nebraska, 68508',
+            const Text(
+              '820 N 17th st, Suite 100Lincoln, Nebraska, 68508',
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Contact Us:',
             ),
-            Text(
+            const Text(
               'Email: support@foodforgood.com\nPhone: +20 1090825437',
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 // Navigate to a page with more detailed information, if needed
               },
-              child: Text('Learn More'),
+              child: const Text('Learn More'),
             ),
           ],
         ),

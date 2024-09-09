@@ -24,7 +24,7 @@ class HelpSupportPage extends StatelessWidget {
               // Navigate to FAQs page or show FAQs dialog
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => FaqsPage()),
+                MaterialPageRoute(builder: (context) => const FaqsPage()),
               );
             },
           ),

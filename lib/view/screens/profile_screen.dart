@@ -154,7 +154,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     backgroundImage: userData!['profilePictureUrl'] != null &&
                             userData!['profilePictureUrl'].isNotEmpty
                         ? NetworkImage(userData!['profilePictureUrl'])
-                        : AssetImage('images/default_profile_picture.jpeg')
+                        : const AssetImage('images/default_profile_picture.jpeg')
                             as ImageProvider,
                   ),
                   Positioned(
@@ -183,7 +183,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Text(
                 userData!['role'] ??
                     'No first name', // Replace with actual role if needed
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   color: Colors.grey,
                 ),

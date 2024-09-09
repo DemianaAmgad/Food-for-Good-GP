@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
 class FaqsPage extends StatelessWidget {
+  const FaqsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('FAQs'),
+        title: const Text('FAQs'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: ListView(
-          children: <Widget>[
+          children: const <Widget>[
             ListTile(
               title: Text(
                 'How can I deliver food?',

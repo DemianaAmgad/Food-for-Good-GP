@@ -45,9 +45,9 @@ class _ScanDocScreenState extends State<ScanDocScreen> {
         scanButtonText = 'Scan Driver License';
         setLocationButtonText = 'Set Driver Location';
         break;
-      case 'Factory Manager':
-        scanButtonText = 'Scan Factory License';
-        setLocationButtonText = 'Set Factory Location';
+      case 'Hotel Manager':
+        scanButtonText = 'Scan Hotel License';
+        setLocationButtonText = 'Set Hotel Location';
         break;
     }
 
